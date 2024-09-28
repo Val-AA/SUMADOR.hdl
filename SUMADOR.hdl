@@ -1,0 +1,43 @@
+CHIP SUMADOR {
+	IN a, b, c;
+	OUT res, carry;
+
+	PARTS:
+	NOT(a=a, out=notA);
+	NOT(a=b, out=notB);
+	NOT(a=c, out=notC);
+
+	//res
+	AND(a=notC, b=notA, out=Nca);
+	AND(a=Nca, b=b, out=eq1);
+
+	AND(a=notC, b=a, out=aNc);
+	AND(a=aNc, b=notB, out=eq2);
+
+	AND(a=c, b=notA, out=cNa);
+	AND(a=cNa, b=notB, out=eq3);
+
+	AND(a=c, b=a, out=ac);
+	AND(a=ac, b=b, out=eq4);
+
+	OR(a=eq1, b=eq2, out=or1);
+	OR(a=eq3, b=eq4, out=or2);
+	OR(a=or1, b=or2, out=res);
+
+	//carry
+	AND(a=notC, b=b, out=eq51);
+	AND(a=eq51, b=a, out=eq5);
+
+	AND(a=c, b=notA, out=eq61);
+	AND(a=eq61, b=b, out=eq6);
+
+	AND(a=c, b=a, out=eq71);
+	AND(a=eq71, b=notB, out=eq7);
+
+	OR(a=eq5, b=eq6, out=or3);
+	OR(a=or3, b=eq7, out=or4);
+	OR(a=or4, b=eq4, out=carry);
+
+
+
+}
